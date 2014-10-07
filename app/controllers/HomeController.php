@@ -17,11 +17,15 @@ class HomeController extends BaseController {
 
 	public function showWelcome()
 	{
-		return View::make('login');
+		return View::make('hello');
+	}
+	public function loged()
+	{
+		return View::make('home');
 	}
 	public function login()
 	{
-		//make the validator
+		
 		$validator = Validator::make(Input::all(),array(
 				'username' 		=> 'required',
 				'password' 		=> 'required|min:5',
@@ -30,20 +34,26 @@ class HomeController extends BaseController {
 
 		if($validator->fails()){
 			//show errors
-			//return Redirect::route('login');
-			return View::make('hello');
+			return Redirect::route('login')->withErrors($validator)->withInput();
+			// return View::make('hello');
 		}else{
 			$userdata = array('username'=>Input::get('username'),'password'=>Input::get('password'));
 			}
 			if(Auth::attempt($userdata))
 			{
-			// return Redirect::route('home')->with('global','Login Successfully!');
+			 
 				return View::make('home');
-		}
-		else
-		{
-           return View::make('login');
-		}
+
+			}
+			else
+			{
+           		return View::make('login');
+			}
+		} 
+
+	public function loginform() {
+		return View::make('login');
 	}
 
 }
+
